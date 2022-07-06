@@ -1,0 +1,61 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+  binaryTargets = ["native", "linux-musl"]
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Student {
+  id    String @id
+  name  String
+  email String @unique
+  enrollments Enrollment[]
+}
+
+model Course {
+  id                 String  @id
+  title              String
+  purchasesProductId String? @unique
+  enrollments Enrollment[]
+}
+
+model Enrollment {
+  id String @id
+  studentId String
+  courseId  String
+  student Student @relation(fields: [studentId], references: [id])
+  course  Course  @relation(fields: [courseId], references: [id])
+  purchasesEnrolledByPurchaseId String? @unique
+  inactivatedAt DateTime?
+  createdAt     DateTime  @default(now())
+}
+
+
+
+model Customer {
+  id    String @id
+  name  String
+  email String
+  purchases Purchase[]
+}
+
+model Product {
+  id    String @id
+  title String
+  purchases Purchase[]
+}
+
+model Purchase {
+  id         String @id
+  customerId String
+  productId  String
+  customer Customer @relation(fields: [customerId], references: [id])
+  product  Product  @relation(fields: [productId], references: [id])
+  createdAt DateTime @default(now())
+}
