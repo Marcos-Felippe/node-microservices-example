@@ -1,0 +1,13 @@
+GET http://localhost:3333/ HTTP/1.1
+content-type: application/json
+
+###
+
+POST http://localhost:3333/purchases HTTP/1.1
+content-type: application/json
+
+{
+    "productId":"gfgfuiyh15156c",
+    "name":"A",
+    "email":"m@email"
+}
